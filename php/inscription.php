@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="../css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/inscription.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     </head>
     <body>
         <!-- Header de la page -->
@@ -59,7 +60,7 @@
                                     <h2>S'inscrire</h2>
                                 </section>
                                 <section class="row">
-                                    <form action="connexion.php" class="form-group" method="POST">
+                                    <form action="inscription.php" class="form-group" method="POST">
                                         <!-- Login -->
                                         <section class="row">
                                             <input type="text" name="login" id="login" class="form_input" placeholder="Login" required>
@@ -88,29 +89,24 @@
             </article>
             <section>
                 <?php
-                /* Condition if qui permet si register est défini d'executer les instructions ci-dessous */
+                $db = mysqli_connect('localhost','root','','livreor');
+
                 if (isset($_POST['register'])){
-                    /* Création de la variable $login qui récupère l'info login du formulaire */
                     $login = $_POST['login'];
-                    /* Création de la variable $password qui récupère l'info password du formulaire */
                     $password = $_POST['password'];
-                    /* Création de la variable $confirm_password qui vas comparer avec la variable précédentes */
                     $confirm_password = $_POST['ConfirmPassword'];
-                    /* Création de la variable $error_log qui affiche un message d'erreur */
                     $error_log = 'Veuillez réessayer ! Login ou mot de passe incorrect.';
 
-                    /* Connexion à la base de données */
-                    $db = mysqli_connect('localhost','root','','livreor');
-
-                    /* Création de la variable $create_user qui contient la requête sql */
-                    $create_user = "INSERT INTO utilisateurs(login, password) VALUES('$login', '$password')";
-
-                    /* Condition if qui permet si $_POST['login'] est défini (ainsi que password) & si password et confirmpassword sont indentique, d'envoyer la requête à la BD
-                    sinon affiche un message d'erreur */
                     if (isset($_POST['login'])){
                         if (isset($_POST['password'])){
                             if ($_POST['password'] === $_POST['ConfirmPassword']){
+                                $create_user = "INSERT INTO utilisateurs(login, password) VALUES('$login', '$password')";
                                 mysqli_query($db, $create_user);
+                                echo '<section class="alert alert-success text-center" role="alert">
+                            <h4 class="alert-heading">Création réussie !</h4>
+                            <p>Merci de ton implication, tu as maintennant accès à toutes les pages du sites !</p>
+                            <hr>
+                            <p>N\' hésite pas à allez jeter un oeil aux commentaires, tu peux également en ajouter un  !</p></section>';
                             }
                             else{
                                 echo '<section class="alert alert-danger text-center" role="alert">' . $error_log . '</section>';
@@ -118,7 +114,12 @@
                         }
                     }
                 }
+                $nbr_ligne = mysqli_num_rows(mysqli_query($db,"SELECT * FROM utilisateurs"));
 
+                if($nbr_ligne == 0) {
+                    mysqli_query($db, "ALTER TABLE utilisateurs AUTO_INCREMENT = 1");
+                    echo("null");
+                }
                 ?>
             </section>
         </main>
@@ -140,6 +141,5 @@
         <!-- JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/907cf96633.js" crossorigin="anonymous"></script>
     </body>
 </html>
