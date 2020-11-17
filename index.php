@@ -30,19 +30,19 @@ mysqli_connect('127.0.0.1','root','','livreor');
                             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Livre d'Or</a>
+                            <a class="nav-link" href="php/livre-or.php">Livre d'Or</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Commentaire</a>
+                            <a class="nav-link" href="php/commentaire.php">Commentaire</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Connexion</a>
+                            <a class="nav-link" href="php/connexion.php">Connexion</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inscription</a>
+                            <a class="nav-link" href="php/inscription.php">Inscription</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Profil</a>
+                            <a class="nav-link" href="php/profil.php">Profil</a>
                         </li>
                     </ul>
                 </div>
