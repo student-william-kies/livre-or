@@ -1,6 +1,11 @@
 <?php
-/* Connexion à la base de données */
-mysqli_connect('127.0.0.1','root','','livreor');
+session_start();
+
+    if (isset($_POST['logout'])){
+
+        session_destroy();
+        header('location: php/connexion.php');
+    }
 ?>
 
 <!DOCTYPE html>
@@ -11,12 +16,14 @@ mysqli_connect('127.0.0.1','root','','livreor');
         <!-- CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     </head>
     <body>
         <!-- Header de la page -->
         <header>
             <section class="text-center container-fluid">
                 <p>- 22 Janvier 2018, Marseille -</p>
+                <?php if (isset($_SESSION['login'])){ echo 'Bonjour <i class="fas fa-user-circle"></i> ' . $_SESSION['login'] . '<br /><form method="POST" action="index.php"><input type="submit" name="logout" value="Déconnexion" class="btn btn-danger"></form>';} ?>
             </section>
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-center navbar-light nav-home">
@@ -35,10 +42,10 @@ mysqli_connect('127.0.0.1','root','','livreor');
                         <li class="nav-item">
                             <a class="nav-link" href="php/commentaire.php">Commentaire</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item nav_log">
                             <a class="nav-link" href="php/connexion.php">Connexion</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item nav_log">
                             <a class="nav-link" href="php/inscription.php">Inscription</a>
                         </li>
                         <li class="nav-item">
