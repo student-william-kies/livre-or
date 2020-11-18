@@ -101,6 +101,7 @@ if (isset($_POST['register'])){
                                         </section>
                                         <!-- Bouton Créer -->
                                         <section class="row">
+                                            <label for="register"></label>
                                             <input type="submit" name="register" value="Créer" class="btn">
                                         </section>
                                     </form>
