@@ -1,3 +1,26 @@
+<?php
+/* Connexion à la base de données */
+$db = mysqli_connect('localhost','root','','livreor');
+
+/* Condition if qui permet si le formulaire register est définie */
+if (isset($_POST['register'])){
+    /* De créer la variable $login qui recupère l'info de l'input login référencer par l'utilisateur */
+    $login = $_POST['login'];
+    /* De même pour le mot de passe */
+    $password = $_POST['password'];
+    /* Et pour la confirmation du mot de passe */
+    $confirm_password = $_POST['ConfirmPassword'];
+    /* Création de la variable $error_log qui permet d'afficher une erreur en cas de mot de passe non indentique */
+    $error_log = 'Veuillez réessayer ! Login ou mot de passe incorrect !';
+
+    /* Condition if qui permet si le mot de passe est identique à sa vérification */
+    if ($password === $confirm_password){
+        /* De naviguer vers la page connexion.php */
+        header('location:connexion.php');
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -63,14 +86,17 @@
                                     <form action="inscription.php" class="form-group" method="POST">
                                         <!-- Login -->
                                         <section class="row">
+                                            <label for="login"></label>
                                             <input type="text" name="login" id="login" class="form_input" placeholder="Login" required>
                                         </section>
                                         <!-- Password -->
                                         <section class="row">
+                                            <label for="password"></label>
                                             <input type="password" name="password" id="password" class="form_input" placeholder="Password" required>
                                         </section>
                                         <!-- Confirm Password -->
                                         <section class="row">
+                                            <label for="ConfirmPassword"></label>
                                             <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="form_input" placeholder="Confirm Password" required>
                                         </section>
                                         <!-- Bouton Créer -->
@@ -89,36 +115,27 @@
             </article>
             <section>
                 <?php
-                $db = mysqli_connect('localhost','root','','livreor');
-
+                /* Condition if qui permet si le formulaire register est définie */
                 if (isset($_POST['register'])){
-                    $login = $_POST['login'];
-                    $password = $_POST['password'];
-                    $confirm_password = $_POST['ConfirmPassword'];
-                    $error_log = 'Veuillez réessayer ! Login ou mot de passe incorrect.';
-
-                    if (isset($_POST['login'])){
-                        if (isset($_POST['password'])){
-                            if ($_POST['password'] === $_POST['ConfirmPassword']){
-                                $create_user = "INSERT INTO utilisateurs(login, password) VALUES('$login', '$password')";
-                                mysqli_query($db, $create_user);
-                                echo '<section class="alert alert-success text-center" role="alert">
-                            <h4 class="alert-heading">Création réussie !</h4>
-                            <p>Merci de ton implication, tu as maintennant accès à toutes les pages du sites !</p>
-                            <hr>
-                            <p>N\' hésite pas à allez jeter un oeil aux commentaires, tu peux également en ajouter un  !</p></section>';
-                            }
-                            else{
-                                echo '<section class="alert alert-danger text-center" role="alert">' . $error_log . '</section>';
-                            }
-                        }
+                    /* De rentrer dans la condition if qui elle permet de tester le mot de passe */
+                    if ($password === $confirm_password){
+                        /* Si celui-ci est identique, cela crer la variable $create_user qui stock la requête sql necessaire a l'enregistrement d'un utilisateur */
+                        $create_user = "INSERT INTO utilisateurs(login, password) VALUES('$login', '$password')";
+                        /* Permet d'envoyer la requête sql à la base de donnée à laquelle nous sommes connectée */
+                        mysqli_query($db, $create_user);
+                    }
+                    /* Si le mot de passe tester est négatif, cela renvoie vers l'affichage de la variable $error_log définie plus comme étant une variable d'erreur */
+                    else{
+                        echo '<section class="alert alert-danger text-center" role="alert">' . $error_log . '</section>';
                     }
                 }
-                $nbr_ligne = mysqli_num_rows(mysqli_query($db,"SELECT * FROM utilisateurs"));
+                /* Création de la variable $controle_id qui permet de récupérer le nombre de lignes dans un résultat */
+                $control_id = mysqli_num_rows(mysqli_query($db,"SELECT * FROM utilisateurs"));
 
-                if($nbr_ligne == 0) {
+                /* Condition if qui permet si c$control_id est identique à 0 (donc un formulaire non remplis) de réinitialisé la valeur de 'id est ainsi garder une certaine cohérence en vue du
+                nombre d'utilisateur inscrit */
+                if($control_id == 0){
                     mysqli_query($db, "ALTER TABLE utilisateurs AUTO_INCREMENT = 1");
-                    echo("null");
                 }
                 ?>
             </section>
