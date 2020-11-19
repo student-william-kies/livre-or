@@ -15,13 +15,14 @@ body{
     font-family: 'Montserrat Alternates', sans-serif;
 }
 
-.nav-home{
-    margin-left: 30%;
+.nav-home ul{
+    width: fit-content;
+    margin: auto;
 }
 
 #nav-title{
     font-family: 'Great Vibes', cursive;
-    font-size: 28px;
+    font-size: 24px;
 }
 
 .main-info-section{

@@ -4,7 +4,7 @@ session_start();
     if (isset($_POST['logout'])){
 
         session_destroy();
-        header('location: php/connexion.php');
+        header('location:php/connexion.php');
     }
 ?>
 
@@ -27,12 +27,14 @@ session_start();
             </section>
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-center navbar-light nav-home">
-                <a class="navbar-brand" href="#"><span id="nav-title">Rose & Mathys</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <section class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="#"><span id="nav-title">Rose & Mathys</span></a>
+                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                         </li>
@@ -42,17 +44,17 @@ session_start();
                         <li class="nav-item">
                             <a class="nav-link" href="php/commentaire.php">Commentaire</a>
                         </li>
-                        <li class="nav-item nav_log">
-                            <a class="nav-link" href="php/connexion.php">Connexion</a>
-                        </li>
-                        <li class="nav-item nav_log">
-                            <a class="nav-link" href="php/inscription.php">Inscription</a>
-                        </li>
+                        <?php
+                        if (!isset($_SESSION['login'])){
+                            echo '<li class="nav-item"><a class="nav-link" href="php/connexion.php">Connexion</a></li>';
+                            echo '<li class="nav-item"><a class="nav-link" href="php/inscription.php">Inscription</a></li>';
+                        }
+                        ?>
                         <li class="nav-item">
                             <a class="nav-link" href="php/profil.php">Profil</a>
                         </li>
                     </ul>
-                </div>
+                </section>
             </nav>
         </header>
 

@@ -40,12 +40,14 @@ if (isset($_POST['register'])){
             </section>
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-center navbar-light nav-home">
-                <a class="navbar-brand" href="#"><span id="nav-title">Rose & Mathys</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <section class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="navbar-brand" href="#"><span id="nav-title">Rose & Mathys</span></a>
+                        </li>
                         <li class="nav-item active">
                             <a class="nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>
                         </li>
@@ -65,7 +67,7 @@ if (isset($_POST['register'])){
                             <a class="nav-link" href="profil.php">Profil</a>
                         </li>
                     </ul>
-                </div>
+                </section>
             </nav>
         </header>
 
