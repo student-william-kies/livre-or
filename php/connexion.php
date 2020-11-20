@@ -5,13 +5,16 @@ session_start();
 if (isset($_POST['signin'])){
     $login = ($_POST['login']);
     $password = ($_POST['password']);
+    $session_id = $_SESSION['id'];
     $error_login = 'Veuillez réessayer ! Utilisateur introuvable (Login/mot de passe incorrect).';
 
     $check_data = mysqli_query($db, "SELECT * FROM utilisateurs WHERE login = '".$_POST['login']."' AND password = '".$_POST['password']."'");
+    $info_user = mysqli_fetch_array($check_data);
 
     if(mysqli_num_rows($check_data)){
-        $_SESSION['login'] = $login;
-        $_SESSION['password'] = $password;
+        $_SESSION['login'] = $info_user['1'];
+        $_SESSION['password'] = $info_user['2'];
+        $_SESSION['id'] = $info_user['0'];
         header('Location: ../index.php');
     }
     else{

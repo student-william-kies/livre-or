@@ -7,15 +7,30 @@ session_start();
         header('location:connexion.php');
     }
 
-    if (isset($_SESSION['signin'])){
-        if (isset($_POST['ValidNewLogin'])){
-            $NewLogin = $_POST['NewLogin'];
+    if (isset($_SESSION['login'])){
+        if(isset($_POST['New_user'])){
+            if (isset($_POST['NewLogin']) && $_POST['NewPassword'] === $_POST['ConfirmNewPassword']){
+                $new_login = $_POST['NewLogin'];
+                $new_password = $_POST['NewPassword'];
+                $confirm_newPassword = $_POST['ConfirmNewPassword'];
+                $session_id = $_SESSION['id'];
 
-            $update = 'UPDATE utilisateurs SET login = $_POST[\'NewLogin\'] WHERE id = $_SESSION[\'id\']';
+                $db = mysqli_connect('localhost', 'root', '', 'livreor');
+                $update_user = mysqli_query($db, "UPDATE utilisateurs SET login = '$new_login', password = '$new_password' WHERE id = '$session_id'");
 
-            /* AFFAIRE A SUIVRE */
+                $_SESSION['login'] = $new_login;
+                $_SESSION['password'] = $new_password;
+
+                if ($update_user){
+                    echo '<section class="alert alert-success text-center" role="alert">Modification effectuée !</section>';
+                }
+                else{
+                    echo '<section class="alert alert-danger text-center" role="alert">Echec de la modification, réessayer !</section>';
+                }
+            }
         }
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -91,21 +106,19 @@ session_start();
                                             <!-- Login -->
                                             <section class="row">
                                                 <label for="NewLogin">Modifier votre login :</label>
-                                                <input type="text" name="NewLogin" id="Newlogin" class="form_input" placeholder="Nouveau login">
-                                                
-                                                <label for="ValidNewLogin"></label>
-                                                <input type="submit" name="ValidNewLogin" value="Modifier" class="btn btn-warning">
+                                                <input type="text" name="NewLogin" id="Newlogin" class="form_input" placeholder="Nouveau login" required>
                                             </section>
                                             <!-- Password -->
                                             <section class="row">
-                                                <label for="NewPassword">Modifier votre mot de passe :</label>
-                                                <input type="password" name="NewPassword" id="NewPassword" class="form_input" placeholder="Nouveau password">
+                                                <label for="NewPassword">Nouveau mot de passe :</label>
+                                                <input type="password" name="NewPassword" id="NewPassword" class="form_input" placeholder="Nouveau password" required>
                                                 
                                                 <label for="ConfirmNewPassword">Confirmer votre nouveau mot de passe :</label>
-                                                <input type="password" name="ConfirmNewPassword" id="ConfirmNewPassword" class="form_input" placeholder="Confirmer le nouveau password">
+                                                <input type="password" name="ConfirmNewPassword" id="ConfirmNewPassword" class="form_input" placeholder="Confirmer le nouveau password" required>
                                                 
-                                                <label for="ValidNewPassword"></label>
-                                                <input type="submit" name="ValidNewPassword" value="Modifier" class="btn btn-warning">
+                                                <label for="New_user"></label>
+                                                <input type="submit" name="New_user" value="Modifier" class="btn btn-warning">
+                                                <p>(<i>Si vous souhaitez conserver vos paramètres, renseigner les champs requis par votre Login ou Mot de passe actuel.</i>)</p>
                                             </section>
                                         </form>
                                     </section>
