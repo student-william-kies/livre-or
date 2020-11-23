@@ -1,26 +1,32 @@
 <?php
+/* Connexion a la base de données */
 $db = mysqli_connect('localhost', 'root', '', 'livreor');
+/* Démarrage de la session */
 session_start();
 
-if (isset($_POST['signin'])){
-    $login = ($_POST['login']);
-    $password = ($_POST['password']);
-    $session_id = $_SESSION['id'];
-    $error_login = 'Veuillez réessayer ! Utilisateur introuvable (Login/mot de passe incorrect).';
+    /* Condition if qui permet si le formulaire signin est défini d'executer le code ci-dessous */
+    if (isset($_POST['signin'])){
+        /* Création des variables */
+        $login = ($_POST['login']);
+        $password = ($_POST['password']);
+        $error_login = 'Veuillez réessayer ! Utilisateur introuvable (Login/mot de passe incorrect).';
 
-    $check_data = mysqli_query($db, "SELECT * FROM utilisateurs WHERE login = '".$_POST['login']."' AND password = '".$_POST['password']."'");
-    $info_user = mysqli_fetch_array($check_data);
+        /* Variable qui permet de stocker la requête SQL */
+        $check_data = mysqli_query($db, "SELECT * FROM utilisateurs WHERE login = '".$_POST['login']."' AND password = '".$_POST['password']."'");
+        /* Envoie la requête SQL en BD */
+        $info_user = mysqli_fetch_array($check_data);
 
-    if(mysqli_num_rows($check_data)){
-        $_SESSION['login'] = $info_user['1'];
-        $_SESSION['password'] = $info_user['2'];
-        $_SESSION['id'] = $info_user['0'];
-        header('Location: ../index.php');
+        /* Condition if qui permet de compter le nombre de ligne dans un résultat et attribut les valeurs aux variables */
+        if(mysqli_num_rows($check_data)){
+            $_SESSION['login'] = $info_user['1'];
+            $_SESSION['password'] = $info_user['2'];
+            $_SESSION['id'] = $info_user['0'];
+            header('Location: ../index.php');
+        }
+        else{
+            echo '<section class="alert alert-danger text-center" role="alert">' . $error_login . '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></section>';
+        }
     }
-    else{
-        echo '<section class="alert alert-danger text-center" role="alert">' . $error_login . '</section>';
-    }
-}
 ?>
 
 <!DOCTYPE html>

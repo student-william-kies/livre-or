@@ -1,31 +1,40 @@
 <?php
+/* Connexion à la base de données */
 $db = mysqli_connect('localhost', 'root', '', 'livreor');
+/* Démarrage de la session */
 session_start();
 
+    /* Condition if qui permet de se déconnecter */
     if (isset($_POST['logout'])){
         session_destroy();
         header('location:connexion.php');
     }
 
-    if (isset($_SESSION['login'])){
+    /* Condition if qui permet si la session est définie et que le formulaire de modification est défini, de pouvoir update ses données */
+    if (isset($_SESSION['id'])){
         if(isset($_POST['New_user'])){
             if (isset($_POST['NewLogin']) && $_POST['NewPassword'] === $_POST['ConfirmNewPassword']){
+
+                /* Création de nouvelles variables */
                 $new_login = $_POST['NewLogin'];
                 $new_password = $_POST['NewPassword'];
                 $confirm_newPassword = $_POST['ConfirmNewPassword'];
                 $session_id = $_SESSION['id'];
 
-                $db = mysqli_connect('localhost', 'root', '', 'livreor');
+                /* Variable qui stock la requête SQL ainsi que son envoie en BD  */
                 $update_user = mysqli_query($db, "UPDATE utilisateurs SET login = '$new_login', password = '$new_password' WHERE id = '$session_id'");
 
+                /* Attribution des nouveaux paramètres */
                 $_SESSION['login'] = $new_login;
                 $_SESSION['password'] = $new_password;
 
+                /* Condition if qui permet si la variable = true, d'afficher un message */
                 if ($update_user){
-                    echo '<section class="alert alert-success text-center" role="alert">Modification effectuée !</section>';
+                    echo '<section class="alert alert-success text-center" role="alert">Modification effectuée !<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></section>';
                 }
+                /* De même pour false */
                 else{
-                    echo '<section class="alert alert-danger text-center" role="alert">Echec de la modification, réessayer !</section>';
+                    echo '<section class="alert alert-danger text-center" role="alert">Echec de la modification, réessayer !<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></section>';
                 }
             }
         }
@@ -71,10 +80,10 @@ session_start();
                             <a class="nav-link" href="commentaire.php">Commentaire</a>
                         </li>
                         <?php
-                        if (!isset($_SESSION['login'])){
-                            echo '<li class="nav-item"><a class="nav-link" href="connexion.php">Connexion</a></li>';
-                            echo '<li class="nav-item"><a class="nav-link" href="inscription.php">Inscription</a></li>';
-                        }
+                            if (!isset($_SESSION['login'])){
+                                echo '<li class="nav-item"><a class="nav-link" href="connexion.php">Connexion</a></li>';
+                                echo '<li class="nav-item"><a class="nav-link" href="inscription.php">Inscription</a></li>';
+                            }
                         ?>
                         <li class="nav-item">
                             <a class="nav-link" href="profil.php">Profil</a>
@@ -88,55 +97,57 @@ session_start();
         <main>
             <article>
                 <?php
-                if (isset($_SESSION['login'])){
-                    echo '
-                    <section class="container-fluid">
-                        <section class="row main-content bg-success text-center">
-                            <section class="col-md-4 text-center company_info">
-                                <span class="company__logo"><i class="fas fa-address-book" style="font-size: 140px;"></i></span>
-                                <br />
-                            </section>
-                            <section class="col-md-8 col-xs-12 col-sm-12 login_form ">
-                                <section class="container-fluid">
-                                    <section class="row">
-                                        <h2>Gestion du compte</h2>
-                                    </section>
-                                    <section class="row">
-                                        <form action="profil.php" class="form-group" method="POST">
-                                            <!-- Login -->
-                                            <section class="row">
-                                                <label for="NewLogin">Modifier votre login :</label>
-                                                <input type="text" name="NewLogin" id="Newlogin" class="form_input" placeholder="Nouveau login" required>
-                                            </section>
-                                            <!-- Password -->
-                                            <section class="row">
-                                                <label for="NewPassword">Nouveau mot de passe :</label>
-                                                <input type="password" name="NewPassword" id="NewPassword" class="form_input" placeholder="Nouveau password" required>
-                                                
-                                                <label for="ConfirmNewPassword">Confirmer votre nouveau mot de passe :</label>
-                                                <input type="password" name="ConfirmNewPassword" id="ConfirmNewPassword" class="form_input" placeholder="Confirmer le nouveau password" required>
-                                                
-                                                <label for="New_user"></label>
-                                                <input type="submit" name="New_user" value="Modifier" class="btn btn-warning">
-                                                <p>(<i>Si vous souhaitez conserver vos paramètres, renseigner les champs requis par votre Login ou Mot de passe actuel.</i>)</p>
-                                            </section>
-                                        </form>
+
+                    /* Condition if qui permet si la session est active d'afficher le formulaire de modif ou non */
+                    if (isset($_SESSION['id'])){
+                        echo '
+                        <section class="container-fluid">
+                            <section class="row main-content bg-success text-center">
+                                <section class="col-md-4 text-center company_info">
+                                    <span class="company__logo"><i class="fas fa-address-book" style="font-size: 140px;"></i></span>
+                                    <br />
+                                </section>
+                                <section class="col-md-8 col-xs-12 col-sm-12 login_form ">
+                                    <section class="container-fluid">
+                                        <section class="row">
+                                            <h2>Gestion du compte</h2>
+                                        </section>
+                                        <section class="row">
+                                            <form action="profil.php" class="form-group" method="POST">
+                                                <!-- Login -->
+                                                <section class="row">
+                                                    <label for="NewLogin">Modifier votre login :</label>
+                                                    <input type="text" name="NewLogin" id="Newlogin" class="form_input" placeholder="Nouveau login" required>
+                                                </section>
+                                                <!-- Password -->
+                                                <section class="row">
+                                                    <label for="NewPassword">Nouveau mot de passe :</label>
+                                                    <input type="password" name="NewPassword" id="NewPassword" class="form_input" placeholder="Nouveau password" required>
+                                                    
+                                                    <label for="ConfirmNewPassword">Confirmer votre nouveau mot de passe :</label>
+                                                    <input type="password" name="ConfirmNewPassword" id="ConfirmNewPassword" class="form_input" placeholder="Confirmer le nouveau password" required>
+                                                    
+                                                    <label for="New_user"></label>
+                                                    <input type="submit" name="New_user" value="Modifier" class="btn btn-warning">
+                                                    <p>(<i>Si vous souhaitez conserver vos paramètres, renseigner les champs requis par votre Login ou Mot de passe actuel.</i>)</p>
+                                                </section>
+                                            </form>
+                                        </section>
                                     </section>
                                 </section>
                             </section>
+                        </section>';
+                    }
+                    else{
+                        echo '
+                        <section class="jumbotron jumbotron-fluid text-center">
+                            <section class="container">
+                            <h1 class="display-4">Profil</h1>
+                            <p class="lead">Veuillez vous connecter ou vous inscrire afin d\'accéder à votre profil !</p>
+                            </section>
                         </section>
-                    </section>';
-                }
-                else{
-                    echo '
-                    <section class="jumbotron jumbotron-fluid text-center">
-                        <section class="container">
-                        <h1 class="display-4">Profil</h1>
-                        <p class="lead">Veuillez vous connecter ou vous inscrire afin d\'accéder à votre profil !</p>
-                        </section>
-                    </section>
-                    <img src="../images/profile_bg.svg" alt="ErrorLog" style="width: 30%; margin-left: 36%; margin-top: 5%;">';
-                }
+                        <img src="../images/profile_bg.svg" alt="ErrorLog" style="width: 30%; margin-left: 36%; margin-top: 5%;">';
+                    }
                 ?>
             </article>
         </main>

@@ -1,6 +1,8 @@
 <?php
+/* Démarrage de la session */
 session_start();
 
+    /* Condition if qui permet si le formulaire de logout est défini, de pouvoir se déconnecter */
     if (isset($_POST['logout'])){
 
         session_destroy();
@@ -23,7 +25,8 @@ session_start();
         <header>
             <section class="text-center container-fluid">
                 <p>- 22 Janvier 2018, Marseille -</p>
-                <?php if (isset($_SESSION['login'])){ echo 'Bonjour <i class="fas fa-user-circle"></i> ' . $_SESSION['login'] . '<br /><form method="POST" action="index.php"><input type="submit" name="logout" value="Déconnexion" class="btn btn-danger"></form>';} ?>
+                <!-- Condition if qui permet si la session est défini, d'afficher bonjour et le log de l'utilisateur && un bouton déconnexion  -->
+                <?php if (isset($_SESSION['id'])){ echo 'Bonjour <i class="fas fa-user-circle"></i> ' . $_SESSION['login'] . '<br /><form method="POST" action="index.php"><input type="submit" name="logout" value="Déconnexion" class="btn btn-danger"></form>';} ?>
             </section>
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-center navbar-light nav-home">
@@ -45,7 +48,8 @@ session_start();
                             <a class="nav-link" href="php/commentaire.php">Commentaire</a>
                         </li>
                         <?php
-                        if (!isset($_SESSION['login'])){
+                        /* Condition if qui permet si une session est active de faire disparaitre les pages connexion et inscription */
+                        if (!isset($_SESSION['id'])){
                             echo '<li class="nav-item"><a class="nav-link" href="php/connexion.php">Connexion</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="php/inscription.php">Inscription</a></li>';
                         }
